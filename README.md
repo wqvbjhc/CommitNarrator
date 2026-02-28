@@ -23,9 +23,9 @@
 
 ```mermaid
 graph LR
-    User[用户指令: "写份本周周报"] --> Agent[LLM Agent]
+    User[用户指令: 写份本周周报] --> Agent[LLM Agent]
     Agent -- 1. 调用工具 --> Tool[Python Extractor]
-    Tool -- 2. 计算准确日期(202X-XX-XX) --> Git[本地 Git 仓库]
+    Tool -- 2. 计算准确日期 202X-XX-XX --> Git[本地 Git 仓库]
     Git -- 3. 提取过滤后的 Log --> Tool
     Tool -- 4. 返回精简数据 --> Agent
     Agent -- 5. 结合 SKILL Prompt --> Report[生成 Markdown 报告]
