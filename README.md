@@ -1,4 +1,4 @@
-# 🤖 GitPulse-AI: Intelligent Git Report Generator
+# 🤖 CommitNarrator: Intelligent Git Report Generator
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
@@ -6,7 +6,7 @@
 
 > **"Stop writing weekly reports manually. Let AI explain your code."**
 >
-> 拒绝编造周报。GitPulse-AI 是一个**基于 LLM 的智能研发汇报助手**。它通过 Python 中间件精准提取 Git 历史，结合 CTO 视角的 Prompt 工程，自动生成具备**业务价值**和**技术深度**的工作总结。
+> 拒绝编造周报。CommitNarrator 是一个**基于 LLM 的智能研发汇报助手**。它通过 Python 中间件精准提取 Git 历史，结合 CTO 视角的 Prompt 工程，自动生成具备**业务价值**和**技术深度**的工作总结。
 
 ## ✨ 核心痛点解决 (Why this?)
 
@@ -14,7 +14,7 @@
 1.  **时间幻觉 (Time Hallucination)**：LLM 经常搞不清 "上周" 具体是几号到几号。
 2.  **上下文爆炸 (Context Overflow)**：直接把 `git log` 丢给 AI，Token 瞬间耗尽，且包含大量 `package-lock.json` 等噪音。
 
-**GitPulse-AI 的解决方案：**
+**CommitNarrator 的解决方案：**
 *   ✅ **Python 宿主计算日期**：由脚本计算精准的 `start_date` 和 `end_date`，杜绝年份错误。
 *   ✅ **智能降噪与熔断**：自动过滤非业务文件，并内置字符熔断机制，保护你的 Token 额度。
 *   ✅ **深度业务推断**：不仅仅是罗列 Commit，而是通过 `diff stat` 和 `body` 分析代码背后的业务价值（稳定性、架构优化等）。
@@ -37,8 +37,8 @@ graph LR
 确保你的环境中安装了 Python 3 和 Git。
 
 ```bash
-git clone https://github.com/your-username/GitPulse-AI.git
-cd GitPulse-AI
+git clone https://github.com/your-username/CommitNarrator.git
+cd CommitNarrator
 chmod +x git_extractor.py
 ```
 
