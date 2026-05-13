@@ -1,0 +1,11 @@
+{
+  "name": "commit-narrator",
+  "version": "1.0.0",
+  "description": "Intelligent Git report generator. Extracts Git history via Python middleware, combines CTO-perspective prompt engineering to auto-generate work summaries with business value and technical depth. Solves LLM date hallucination and context overflow.",
+  "author": {
+    "name": "chenjihong"
+  },
+  "homepage": "https://github.com/wqvbjhc/commit-narrator",
+  "license": "MIT",
+  "keywords": ["git", "report", "weekly-report", "work-summary", "commit", "changelog", "dev-report"]
+}

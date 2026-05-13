@@ -1,0 +1,17 @@
+{
+  "name": "commit-narrator-marketplace",
+  "owner": {
+    "name": "chenjihong"
+  },
+  "plugins": [
+    {
+      "name": "commit-narrator",
+      "source": {
+        "source": "github",
+        "repo": "wqvbjhc/commit-narrator"
+      },
+      "description": "Intelligent Git report generator. Auto-generate work summaries from Git commits with business value and technical depth.",
+      "version": "1.0.0"
+    }
+  ]
+}

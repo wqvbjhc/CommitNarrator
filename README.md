@@ -1,136 +1,169 @@
-# 🤖 CommitNarrator: Intelligent Git Report Generator
+# CommitNarrator
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
-[![Agent Ready](https://img.shields.io/badge/Agent-Ready-green)](https://github.com/topics/agent)
+### Turn `git log` into executive-ready reports in seconds.
 
-> **"Stop writing weekly reports manually. Let AI explain your code."**
+[![Python 3.8+](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
+[![Claude Code](https://img.shields.io/badge/Claude_Code-Skill-green)](https://claude.ai/claude-code)
+
+```
+You: "Generate my weekly report"
+
+CommitNarrator: ✅ Done. 47 commits → 1 structured report with business insights.
+```
+
+---
+
+## Before vs After
+
+| Without CommitNarrator | With CommitNarrator |
+|---|---|
+| Scroll through `git log` for 20 minutes | Say "write my weekly report" |
+| Copy-paste commits into ChatGPT | AI extracts, filters, and analyzes automatically |
+| Get a commit list with no business context | Get risk assessment, effort distribution, and next-step suggestions |
+| Wrong dates because LLM hallucinated "last week" | Python calculates exact date ranges — zero hallucination |
+
+---
+
+## See It In Action
+
+**You say:** `Generate my weekly report`
+
+**You get:**
+
+> ## 📅 Tech Report (2026-05-05 ~ 2026-05-11)
 >
-> 拒绝编造周报。CommitNarrator 是一个**基于 LLM 的智能研发汇报助手**。它通过 Python 中间件精准提取 Git 历史，结合 CTO 视角的 Prompt 工程，自动生成具备**业务价值**和**技术深度**的工作总结。
+> ### 🎯 Executive Summary
+> Key deliverable: **Payment Gateway 2.0 refactor**, reducing cross-border payment latency and fixing an order-status race condition. +450 / -120 lines across 12 files, focused on feature delivery and stability.
+>
+> ### ✨ Detailed Changes
+> **🚀 Features**
+> - **Stripe Integration**: Aggregated payment API with multi-currency settlement
+>
+> **🐛 Bug Fixes**
+> - **Connection Pool**: Resolved DB pool exhaustion under high concurrency, preventing cascading timeouts
+>
+> **🛠️ Infrastructure**
+> - Replaced `moment.js` → `date-fns`, bundle size -200KB
+>
+> ### ⚠️ Risks
+> - **payment/** changed 8 times this week — recommend regression testing before release
+>
+> ### 📊 Effort Distribution
+> - 🔴 Features: ~50% · 🟡 Bug Fixes: ~30% · 🟢 Infra: ~20%
+>
+> ### 💡 Next Steps
+> Payment module had high churn — consider adding integration tests before next sprint.
 
-## ✨ 核心痛点解决 (Why this?)
+Works in **English, Chinese, or any language** — the report matches your input language.
 
-大多数 AI 写周报的工具存在两个致命问题：
-1.  **时间幻觉 (Time Hallucination)**：LLM 经常搞不清 "上周" 具体是几号到几号。
-2.  **上下文爆炸 (Context Overflow)**：直接把 `git log` 丢给 AI，Token 瞬间耗尽，且包含大量 `package-lock.json` 等噪音。
+---
 
-**CommitNarrator 的解决方案：**
-*   ✅ **Python 宿主计算日期**：由脚本计算精准的 `start_date` 和 `end_date`，杜绝年份错误。
-*   ✅ **智能降噪与熔断**：自动过滤非业务文件，并内置字符熔断机制，保护你的 Token 额度。
-*   ✅ **深度业务推断**：不仅仅是罗列 Commit，而是通过 `diff stat` 和 `body` 分析代码背后的业务价值（稳定性、架构优化等）。
+## Install
 
-## 🛠️ 架构原理
+In Claude Code, run these two commands:
+
+```
+/plugin marketplace add wqvbjhc/commit-narrator
+/plugin install commit-narrator@commit-narrator-marketplace
+```
+
+That's it. Now open any Git repo and ask for a report.
+
+<details>
+<summary>Manual installation</summary>
+
+```bash
+git clone https://github.com/wqvbjhc/commit-narrator.git
+
+# Global (available everywhere)
+cp -r commit-narrator/skills/commit-narrator ~/.claude/skills/
+
+# Or project-level (this repo only)
+mkdir -p .claude/skills
+cp -r commit-narrator/skills/commit-narrator .claude/skills/
+```
+
+Requires: Python 3.8+, Git
+
+</details>
+
+---
+
+## How To Use
+
+### In Claude Code — just talk
+
+```
+> Write my weekly report
+> 写一份本周周报
+> What did the team ship last month?
+> Sprint summary for the past two weeks
+> Quarterly review for john@company.com
+```
+
+### As a standalone CLI
+
+Run inside any Git repository directory:
+
+```bash
+# cd into your project first
+cd /path/to/your/git/project
+
+python3 /path/to/commit-narrator/scripts/git_extractor.py --period this_week
+python3 /path/to/commit-narrator/scripts/git_extractor.py --period last_month --author all
+python3 /path/to/commit-narrator/scripts/git_extractor.py --since 2026-01-01 --until 2026-03-31
+```
+
+---
+
+## What Makes It Different
+
+| Problem | How CommitNarrator Solves It |
+|---|---|
+| **LLMs hallucinate dates** | Python calculates exact `start_date` / `end_date` — never wrong |
+| **Token explosion** | Auto-filters lock files, images, build artifacts + 50K char circuit breaker |
+| **Commit spam** | Merges related commits into cohesive narratives with business context |
+| **No risk awareness** | Flags high-churn modules, large hotfixes, stability concerns |
+| **Manual effort** | One sentence in, structured report out |
+
+---
+
+## How It Works
 
 ```mermaid
 graph LR
-    User[用户指令: 写份本周周报] --> Agent[LLM Agent]
-    Agent -- 1. 调用工具 --> Tool[Python Extractor]
-    Tool -- 2. 计算准确日期 202X-XX-XX --> Git[本地 Git 仓库]
-    Git -- 3. 提取过滤后的 Log --> Tool
-    Tool -- 4. 返回精简数据 --> Agent
-    Agent -- 5. 结合 SKILL Prompt --> Report[生成 Markdown 报告]
+    User["'Write my weekly report'"] --> Agent[Claude Agent]
+    Agent -- "calls tool" --> Py[Python Extractor]
+    Py -- "calculates dates" --> Git[Git Repo]
+    Git -- "filtered commits" --> Py
+    Py -- "structured data" --> Agent
+    Agent -- "SKILL prompt" --> Report["📄 Markdown Report"]
 ```
 
-## 🚀 快速开始
+## Parameters
 
-### 1. 环境准备
-确保你的环境中安装了 Python 3 和 Git。
+| Parameter | Description | Values |
+|-----------|-------------|--------|
+| `--period` | Relative time range (recommended) | `today` `yesterday` `this_week` `last_week` `this_month` `last_month` `this_quarter` `last_quarter` `this_year` |
+| `--author` | Filter by contributor | name, email, or `all` |
+| `--since` | Exact start date | `YYYY-MM-DD` |
+| `--until` | Exact end date | `YYYY-MM-DD` |
 
-```bash
-git clone https://github.com/your-username/CommitNarrator.git
-cd CommitNarrator
-chmod +x git_extractor.py
-```
+## Roadmap
 
-### 2. 作为命令行工具使用 (CLI)
-你可以在任何 Git 仓库目录下直接运行脚本，获取清洗后的数据（用于手动喂给 ChatGPT/Claude）：
+- [x] Smart Git log extraction & filtering
+- [x] Python-native date calculation (no LLM hallucination)
+- [x] CTO-perspective prompt engineering
+- [x] Quarterly & monthly report support
+- [ ] `--compact` mode (stats only, save tokens)
+- [ ] Code contribution heatmap
+- [ ] PPT report export
+- [ ] Slack / Feishu / Teams integration
 
-```bash
-# 获取本周数据（自动计算日期）
-./git_extractor.py --period this_week
+## Contributing
 
-# 获取指定人员数据
-./git_extractor.py --period last_week --author "zhangsan"
+PRs and issues welcome — especially better prompt strategies and filter rules.
 
-# 获取全员数据（Team Leader 模式）
-./git_extractor.py --period this_month --author all
-```
+## License
 
-### 3. 作为skills方法
-
-#### 方法 1：全局安装（推荐）
-
-将 skill 复制到用户的全局 skills 目录：
-
-```bash
-cp -r templates/.claude/skills/news ~/.claude/skills/
-```
-
-#### 方法 2：项目级别安装
-
-将 skill 复制到项目的 `.claude/skills/` 目录：
-
-```bash
-mkdir -p .claude/skills
-cp -r templates/.claude/skills/news .claude/skills/
-```
-
-#### 方法 3：从模板创建
-
-如果你正在使用这个模板仓库，可以直接引用：
-
-```bash
-# 在你的项目中
-ln -s /path/to/claude-init/templates/.claude/skills/news ~/.claude/skills/news
-```
-
-## 📊 报告效果示例
-
-**用户指令**：`生成本周的周报`
-
-**Agent 输出**：
-
-> ## 📅 阶段性技术报告 (本周 Review)
->
-> ### 1. 🎯 核心成果概览
-> 本周重点完成了 **支付网关 2.0 的重构**，显著降低了跨国支付的延迟，并修复了订单状态同步的竞态条件问题。
->
-> ### 2. ✨ 详细变更分析
-> *   **🆕 新特性 (Features)**
->     *   **Stripe 集成**：新增聚合支付接口，支持多币种结算。
-> *   **🐛 稳定性 (Bug Fixes)**
->     *   **死锁修复**：解决了高并发下数据库连接池耗尽的问题。
-> *   **🛠️ 工程化**
->     *   移除 `moment.js`，替换为 `date-fns`，包体积减少 200kb。
->
-> ### 3. 📈 数据统计
-> *   **变更文件**: 12 个
-> *   **代码变动**: +450 lines / -120 lines
-
-## ⚙️ 参数说明
-
-| 参数 | 描述 | 示例 |
-| :--- | :--- | :--- |
-| `--period` | **(推荐)** 相对时间范围，自动计算日期 | `today`, `yesterday`, `this_week`, `last_week`, `this_month` |
-| `--author` | 作者筛选，支持模糊匹配或 "all" | `john`, `all` |
-| `--since` | 自定义开始日期 | `2024-01-01` |
-| `--until` | 自定义结束日期 | `2024-01-31` |
-
-## 🗺️ Roadmap
-
-- [x] 基础 Git Log 提取与清洗
-- [x] 智能日期计算 (Python Native)
-- [x] SKILL Prompt 模板 v1.0
-- [ ] **增强**: 支持提取详细信息
-- [ ] **增强**: 支持作成PPT报告
-- [ ] **增强**: 支持发送到群聊
-- [ ] **优化**: 增加 `--compact` 模式 (仅统计不带 diff) 以节省大量 Token
-- [ ] **分析**: 增加"代码贡献热力图"数据输出
-
-## 🤝 Contributing
-
-欢迎提交 Issue 和 Pull Request！如果你有更好的 Prompt 策略或过滤规则，请分享出来。
-
-## 📄 License
-
-MIT License © 2026 wqvbjhc
+MIT © 2026 wqvbjhc
