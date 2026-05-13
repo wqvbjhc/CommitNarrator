@@ -1,4 +1,4 @@
-# CommitNarrator
+# commit-narrator
 
 ### Turn `git log` into executive-ready reports in seconds.
 
@@ -8,14 +8,14 @@
 ```
 You: "Generate my weekly report"
 
-CommitNarrator: ✅ Done. 47 commits → 1 structured report with business insights.
+commit-narrator: ✅ Done. 47 commits → 1 structured report with business insights.
 ```
 
 ---
 
 ## Before vs After
 
-| Without CommitNarrator | With CommitNarrator |
+| Without commit-narrator | With commit-narrator |
 |---|---|
 | Scroll through `git log` for 20 minutes | Say "write my weekly report" |
 | Copy-paste commits into ChatGPT | AI extracts, filters, and analyzes automatically |
@@ -64,7 +64,7 @@ In Claude Code, run these two commands:
 
 ```
 /plugin marketplace add wqvbjhc/commit-narrator
-/plugin install commit-narrator@commit-narrator-marketplace
+/plugin install commit-narrator
 ```
 
 That's it. Now open any Git repo and ask for a report.
@@ -118,7 +118,7 @@ python3 /path/to/commit-narrator/scripts/git_extractor.py --since 2026-01-01 --u
 
 ## What Makes It Different
 
-| Problem | How CommitNarrator Solves It |
+| Problem | How commit-narrator Solves It |
 |---|---|
 | **LLMs hallucinate dates** | Python calculates exact `start_date` / `end_date` — never wrong |
 | **Token explosion** | Auto-filters lock files, images, build artifacts + 50K char circuit breaker |

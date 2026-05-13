@@ -10,7 +10,7 @@ description: >
   Use whenever the user wants to turn Git commits into a structured work report.
 ---
 
-# CommitNarrator: Intelligent Git Report Skill
+# commit-narrator: Intelligent Git Report Skill
 
 ## Agent Role & Objective
 
