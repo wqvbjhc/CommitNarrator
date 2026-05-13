@@ -1,0 +1,25 @@
+README.md
+  c731e5f27941e7dd 1,11,18,67,121
+skills/commit-narrator/SKILL.md
+  c731e5f27941e7dd 13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.14",
+  "base_commit_sha": "1d0792e08c891ee80b190434cc6799515e43529d",
+  "prompts": {
+    "c731e5f27941e7dd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fd418f55-dec3-4f07-a9c7-565416c5350d",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "chenjihong <chenjihong@cvte.com>",
+      "messages": [],
+      "total_additions": 6,
+      "total_deletions": 6,
+      "accepted_lines": 6,
+      "overriden_lines": 0
+    }
+  }
+}
