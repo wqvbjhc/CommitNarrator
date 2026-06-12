@@ -144,8 +144,8 @@ graph LR
 
 | Parameter | Description | Values |
 |-----------|-------------|--------|
-| `--period` | Relative time range (recommended) | `today` `yesterday` `this_week` `last_week` `this_month` `last_month` `this_quarter` `last_quarter` `this_year` |
-| `--author` | Filter by contributor | name, email, or `all` |
+| `--period` | Relative time range (recommended) | `today` `yesterday` `this_week` `last_week` `this_month` `last_month` `this_quarter` `last_quarter` `this_year`. **Default: `this_week`** if no period or date range specified |
+| `--author` | Filter by contributor | name, email, `all`, `team`, or `everyone` (`all`/`team`/`everyone` all return unfiltered results) |
 | `--since` | Exact start date | `YYYY-MM-DD` |
 | `--until` | Exact end date | `YYYY-MM-DD` |
 
@@ -163,6 +163,10 @@ graph LR
 ## Contributing
 
 PRs and issues welcome — especially better prompt strategies and filter rules.
+
+## 更新记录
+
+- 2026-06-11 AI 自动扫描更新：补充 `--period` 默认行为（this_week）和 `--author` 隐藏值（team/everyone）
 
 ## License
 
